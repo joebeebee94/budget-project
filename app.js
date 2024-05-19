@@ -8,11 +8,9 @@ dotenv.config({ path: "./config/.env" });
 
 // create app with body parsing & logging
 const app = express();
-app.use(logger("dev"));
 app.use(express.json());
+if (process.env.NODE_ENV === !'test') {
+    app.use(logger("dev"));
+};
 
-// set port and listen
-const PORT = process.env.PORT;
-app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`);
-});
+module.exports = app;
