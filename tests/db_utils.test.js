@@ -9,7 +9,6 @@ const {
 } = require('../utils/db_utils');
 const db = require('../config/db.json');
 const setupTeardownDb = require('./testSetup');
-const path = require('path');
 
 
 describe('Database Utility Functions', () => {
@@ -36,17 +35,18 @@ describe('Database Utility Functions', () => {
             const expectedRecord = {
                 'id': '12345678',
                 'name': 'Eating Out',
+                'budget_max': '150',
                 'budget_remaining': '100'
             };
             // execute
-            const record = findById(db, '12345678');
+            const record = findById('12345678');
             // verify
             assert.deepEqual(record, expectedRecord);
     
         });
         it('returns undefined if no record is found', () => {
             // execute
-            const record = findById(db, 'xxxxxxxx');
+            const record = findById('xxxxxxxx');
             // verify
             assert.strictEqual(record, undefined);
         });
@@ -55,16 +55,16 @@ describe('Database Utility Functions', () => {
     describe('commitToDb', () => {
         it('commits an updated instance of db to json file', () => {
             // setup
-            const updatedDb = [];
-            const dbPath = path.join(__dirname, '../config/db.json');
+            const newDb = [];
+            const path = '../config/db';
     
             // execute
-            commitToDb(updatedDb);
-            const dbFile = fs.readFileSync(dbPath);
+            commitToDb(newDb);
+            const dbFile = fs.readFileSync(path);
             const data = JSON.parse(dbFile);
     
             // verify
-            assert.deepStrictEqual(data, updatedDb);
+            assert.deepStrictEqual(data, newDb);
         });
     });
     
@@ -74,8 +74,8 @@ describe('Database Utility Functions', () => {
             const id = '12345678';
             const expectedDbLength = db.length -1;
             // execute
-            deleteById(db, id);
-            const record = findById(db, id);
+            deleteById(id);
+            const record = findById(id);
             const DbLength = db.length;
             // verify
             assert.strictEqual(record, undefined);
