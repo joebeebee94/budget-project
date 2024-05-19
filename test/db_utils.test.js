@@ -39,14 +39,14 @@ describe('Database Utility Functions', () => {
                 'budget_remaining': '100'
             };
             // execute
-            const record = findById('12345678');
+            const record = findById(db, '12345678');
             // verify
             assert.deepEqual(record, expectedRecord);
     
         });
         it('returns undefined if no record is found', () => {
             // execute
-            const record = findById('xxxxxxxx');
+            const record = findById(db, 'xxxxxxxx');
             // verify
             assert.strictEqual(record, undefined);
         });
@@ -55,16 +55,16 @@ describe('Database Utility Functions', () => {
     describe('commitToDb', () => {
         it('commits an updated instance of db to json file', () => {
             // setup
-            const newDb = [];
+            const updatedDb = [];
             const dbPath = path.join(__dirname, '../config/db.json');
     
             // execute
-            commitToDb(newDb);
+            commitToDb(updatedDb);
             const dbFile = fs.readFileSync(dbPath);
             const data = JSON.parse(dbFile);
     
             // verify
-            assert.deepStrictEqual(data, newDb);
+            assert.deepStrictEqual(data, updatedDb);
         });
     });
     
@@ -74,8 +74,8 @@ describe('Database Utility Functions', () => {
             const id = '12345678';
             const expectedDbLength = db.length -1;
             // execute
-            deleteById(id);
-            const record = findById(id);
+            deleteById(db, id);
+            const record = findById(db, id);
             const DbLength = db.length;
             // verify
             assert.strictEqual(record, undefined);
