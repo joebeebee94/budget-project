@@ -8,16 +8,12 @@ const {
     deleteById
 } = require('../utils/db-utils');
 const db = require('../config/db.json');
+const setupTeardownDb = require('./testSetup');
+const path = require('path');
+
 
 describe('Database Utility Functions', () => {
-    // restore original state of db after each test
-    let dbOriginalState;
-    beforeEach(() => {
-        dbOriginalState = JSON.stringify(db, null, 2);
-    });
-    afterEach(() => {
-        fs.writeFileSync('./config/db.json' , dbOriginalState, 'utf-8');
-    });
+    setupTeardownDb();  // restores db to original state after each test
 
     describe('createId', () => {
         it('returns a string with 8 numeric charcacters to use an id', () => {
@@ -40,7 +36,6 @@ describe('Database Utility Functions', () => {
             const expectedRecord = {
                 'id': '12345678',
                 'name': 'Eating Out',
-                'budget_max': '150',
                 'budget_remaining': '100'
             };
             // execute
@@ -58,14 +53,14 @@ describe('Database Utility Functions', () => {
     });
     
     describe('commitToDb', () => {
-        it('commits a current instance of db to json file', () => {
+        it('commits an updated instance of db to json file', () => {
             // setup
             const newDb = [];
-            const path = '../config/db';
+            const dbPath = path.join(__dirname, '../config/db.json');
     
             // execute
             commitToDb(newDb);
-            const dbFile = fs.readFileSync(path);
+            const dbFile = fs.readFileSync(dbPath);
             const data = JSON.parse(dbFile);
     
             // verify

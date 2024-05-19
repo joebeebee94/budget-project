@@ -152,10 +152,12 @@
     "yocto-queue": "^0.1.0"
   },
   "devDependencies": {
-    "mocha": "^10.4.0"
+    "chai": "^5.1.1",
+    "mocha": "^10.4.0",
+    "supertest": "^7.0.0"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "NODE_ENV=test mocha",
     "dev": "nodemon app",
     "start": "node app"
   },
