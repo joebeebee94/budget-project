@@ -1,4 +1,4 @@
-# Codecademy Portfolio Project II
+# Portfolio Project II
 ## Personal Envelope Budgeting Tool
 The objective of this project is to build an API that allows clients to create and manage a personal budget, using [Envelope Budgeting](https://www.thebalance.com/what-is-envelope-budgeting-1293682) principles. This API allows uers to manage budget envelopes and track the balance of each envelope, and has been built following best pratices regarding RESTful API implementation and Git/Github version control.
 
