@@ -35,7 +35,7 @@ swaggerOptions.swaggerDefinition.components.schemas.Envelope = {
       type: 'string',
       description: 'The name of the envelope'
     },
-    budget: {
+    budget_remaining: {
       type: 'number',
       description: 'The budget amount for the envelope'
     }

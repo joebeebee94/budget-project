@@ -2,6 +2,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const {
+    getDb,
     createId,
     findById,
     commitToDb,
@@ -14,6 +15,20 @@ const path = require('path');
 
 describe('Database Utility Functions', () => {
     setupTeardownDb();  // restores db to original state after each test
+
+    describe('getDb', () => {
+        it('returns db as object', () => {
+            // setup
+            const expectedDbLength = 2;
+            // execute
+            const currentDb = getDb();
+            // verify
+            assert.strictEqual(currentDb.length, expectedDbLength);
+            assert.deepEqual(currentDb, db);
+
+        })
+    })
+
 
     describe('createId', () => {
         it('returns a string with 8 numeric charcacters to use an id', () => {

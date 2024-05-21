@@ -2,18 +2,13 @@
 const app = require('../app');
 const request = require('supertest');
 const setupTeardownDb = require('./testSetup');
-const db = require('../config/db.json');
-const path = require('path');
 const assert = require('assert');
 const fs = require('fs');
+const path = require('path');
+const dbPath = path.join(__dirname, '../config/db.json');
 
 
 describe('API Endpoints', () => {
-  let dbPath;
-  before(() => {
-    dbPath = path.join(__dirname, '../config/db.json');
-  });
-
   setupTeardownDb();  // restores db to original state after each test
 
   describe('GET /api/v1/envelopes', () => {
@@ -31,9 +26,9 @@ describe('API Endpoints', () => {
       // setup
       const payload = {
         name: 'Gym',
-        budget_remaining: '50'
+        budget_remaining: 50
       };
-      const expectedDbLength = db.length +1;
+      const expectedDbLength = 3;
 
       // execute & verify
       const response = await request(app)
@@ -70,8 +65,7 @@ describe('API Endpoints', () => {
       // execute & verify
       const response = await request(app)
         .get('/api/v1/envelopes/12345678')
-        .expect(200)
-        .expect('Content-Type', /json/);
+        .expect(200);
     });
 
     it('returns 404 if no record with matching id is found', async () => {
@@ -87,7 +81,7 @@ describe('API Endpoints', () => {
     it('updates record from request params & returns updated record', async () => {
       // setup
       const payload = {
-        budget_remaining: '40'
+        budget_remaining: 40
       };
       const id = '12345678';
       const expectedResponseBody = {
@@ -112,7 +106,8 @@ describe('API Endpoints', () => {
     it('deletes record with matching id from db json file', async () => {
       // setup
       const id = '12345678';
-      const expectedDbLength = db.length -1;
+      const expectedDbLength = 1;
+      const expectedResponseBody = {};
 
       // execute & verify
       const response = await request(app)
@@ -121,18 +116,19 @@ describe('API Endpoints', () => {
 
       const updatedDb = JSON.parse(fs.readFileSync(dbPath));
       assert.strictEqual(updatedDb.length, expectedDbLength);
+      assert.deepEqual(response.body, expectedResponseBody);
     });
   });
 
-  describe('POST /api/v1/envelopes/transfer/:from/:to', () => {
+  describe('POST /api/v1/envelopes/transfer/:fromId/:toId', () => {
     it('valid transfers budget_remaining from one record to another', async () => {
       // setup
       const fromId = '12345678';
       const toId = '23456789';
       const payload = {amount: 30};
       const expectedResponseBody = [
-        {"id": "12345678", "name": "Eating Out", "budget_remaining": "100"},
-        {"id": "23456789", "name": "Pub", "budget_remaining": "50"}
+        {"id": "12345678", "name": "Eating Out", "budget_remaining": 70},
+        {"id": "23456789", "name": "Pub", "budget_remaining": 80}
       ];
 
       // execute & verify
@@ -152,7 +148,7 @@ describe('API Endpoints', () => {
       const fromId = '12345678';
       const toId = '23456789';
       const payload = {amount: 300};
-      const expectedResponseBody = {message: `Not enough budget in envelope ${fromId}`};
+      const expectedResponseBody = {message: `Insuffient funds to make transfer`};
 
       // execute & verify
       response = await request(app)

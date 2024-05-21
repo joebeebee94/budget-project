@@ -166,6 +166,6 @@ router.delete('/:id', deleteEnvelope);
  *         description: No matching record found
  * 
  */
-router.post('/:from/:to', transfer);
+router.post('/transfer/:fromId/:toId', transfer);
 
 module.exports = router;
