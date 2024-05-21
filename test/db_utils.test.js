@@ -6,7 +6,7 @@ const {
     findById,
     commitToDb,
     deleteById
-} = require('../utils/db_utils');
+} = require('../utils/db-utils');
 const db = require('../config/db.json');
 const setupTeardownDb = require('./testSetup');
 const path = require('path');
