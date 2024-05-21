@@ -1,12 +1,12 @@
 [
-    {
-      "id": "12345678",
-      "name": "Eating Out",
-      "budget_remaining": "100"
-    },
-    {
-      "id": "23456789",
-      "name": "Pub",
-      "budget_remaining": "50"
-    }
-  ]
+  {
+    "id": "12345678",
+    "name": "Eating Out",
+    "budget_remaining": 100
+  },
+  {
+    "id": "23456789",
+    "name": "Pub",
+    "budget_remaining": 50
+  }
+]
