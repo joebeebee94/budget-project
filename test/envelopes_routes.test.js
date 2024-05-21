@@ -16,17 +16,17 @@ describe('API Endpoints', () => {
 
   setupTeardownDb();  // restores db to original state after each test
 
-  describe('GET /envelopes', () => {
+  describe('GET /api/v1/envelopes', () => {
     it('returns json containing all envelopes', async () => {
       // execute & verify
       const response = await request(app)
-        .get('/envelopes')
+        .get('/api/v1/envelopes')
         .expect(200)
         .expect('Content-Type', /json/);
     });
   });
 
-  describe('POST /envelopes', () => {
+  describe('POST /api/v1/envelopes', () => {
     it('returns json containing new record saved to json file', async () => {
       // setup
       const payload = {
@@ -37,7 +37,7 @@ describe('API Endpoints', () => {
 
       // execute & verify
       const response = await request(app)
-        .post('/envelopes')
+        .post('/api/v1/envelopes')
         .send(payload)
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
@@ -57,7 +57,7 @@ describe('API Endpoints', () => {
 
       // execute & verify
       const response = await request(app)
-        .post('/envelopes')
+        .post('/api/v1/envelopes')
         .send(payload)
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
@@ -65,11 +65,11 @@ describe('API Endpoints', () => {
     });
   });
 
-  describe('GET /envelopes/:id', () => {
+  describe('GET /api/v1/envelopes/:id', () => {
     it('returns json containing record with matching id', async () => {
       // execute & verify
       const response = await request(app)
-        .get('/envelopes/12345678')
+        .get('/api/v1/envelopes/12345678')
         .expect(200)
         .expect('Content-Type', /json/);
     });
@@ -77,13 +77,13 @@ describe('API Endpoints', () => {
     it('returns 404 if no record with matching id is found', async () => {
       // execute & verify
       const response = await request(app)
-        .get('/envelopes/xxxxxxxx')
+        .get('/api/v1/envelopes/xxxxxxxx')
         .expect(404)
         .expect('Content-Type', /json/);
     });
   });
 
-  describe('PUT /envelopes/:id', () => {
+  describe('PUT /api/v1/envelopes/:id', () => {
     it('updates record from request params & returns updated record', async () => {
       // setup
       const payload = {
@@ -98,7 +98,7 @@ describe('API Endpoints', () => {
 
       // execute & verify
       const response = await request(app)
-        .put(`/envelopes/${id}`)
+        .put(`/api/v1/envelopes/${id}`)
         .send(payload)
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
@@ -108,7 +108,7 @@ describe('API Endpoints', () => {
     });
   });
 
-  describe('DELETE /envelopes/:id', () => {
+  describe('DELETE /api/v1/envelopes/:id', () => {
     it('deletes record with matching id from db json file', async () => {
       // setup
       const id = '12345678';
@@ -116,7 +116,7 @@ describe('API Endpoints', () => {
 
       // execute & verify
       const response = await request(app)
-        .delete(`/envelopes/${id}`)
+        .delete(`/api/v1/envelopes/${id}`)
         .expect(204);
 
       const updatedDb = JSON.parse(fs.readFileSync(dbPath));
@@ -124,7 +124,7 @@ describe('API Endpoints', () => {
     });
   });
 
-  describe('POST /envelopes/transfer/:from/:to', () => {
+  describe('POST /api/v1/envelopes/transfer/:from/:to', () => {
     it('valid transfers budget_remaining from one record to another', async () => {
       // setup
       const fromId = '12345678';
@@ -137,7 +137,7 @@ describe('API Endpoints', () => {
 
       // execute & verify
       response = await request(app)
-        .post(`/envelopes/transfer/${fromId}/${toId}`)
+        .post(`/api/v1/envelopes/transfer/${fromId}/${toId}`)
         .send(payload)
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
@@ -156,7 +156,7 @@ describe('API Endpoints', () => {
 
       // execute & verify
       response = await request(app)
-        .post(`/envelopes/transfer/${fromId}/${toId}`)
+        .post(`/api/v1/envelopes/transfer/${fromId}/${toId}`)
         .send(payload)
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
